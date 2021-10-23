@@ -7,7 +7,7 @@ const createdMarkup = createGalleryMarkup(galleryItems);
 gallery.innerHTML = createdMarkup;
 
 gallery.addEventListener('click', onImgClick);
-gallery.addEventListener('keydown', onEscModalClose);
+
     
 function createGalleryMarkup(items) {
     return items.map(({ original, preview, description }) => {
@@ -27,11 +27,7 @@ function createGalleryMarkup(items) {
 
 function onImgClick(evt) {
     evt.preventDefault();
-    const galleryWidth = gallery.offsetWidth;
-    const galleryHeight = gallery.offsetHeight;
-    console.log(galleryWidth);
-    console.log(galleryHeight);
-
+   
     if (evt.target.nodeName !== 'IMG') {
         return;
     }
@@ -41,11 +37,23 @@ function onImgClick(evt) {
      <img src="${evt.target.dataset.source} width="1280" height="720">
     </div>
 `, {
-    onShow: (instance) => {
-        instance.element().querySelector('.modal').onclick = instance.close
-    }
+        onShow: (instance) => {
+        instance.element().querySelector('.modal').onclick = instance.close;
+        gallery.addEventListener('keydown', onEscModalClose, {once: true});
 
-
+            function onEscModalClose(evt) {
+                if (evt.key === 'Escape') {
+                    instance.close();
+                return;
+            }  
+            }
+        
+        }
+    },
+   {
+    onClose: (evt) => {
+           gallery.removeEventListener('keydown', onEscModalClose, { once: true });
+        }
 })
    
     instance.show()
@@ -53,20 +61,20 @@ function onImgClick(evt) {
    
 }
 
-function onEscModalClose(evt) {
-    if (evt.key === 'Escape') {
+// function onEscModalClose(evt) {
+//     if (evt.key === 'Escape') {
         
     
-        const instance = basicLightbox.create(`
+//         const instance = basicLightbox.create(
    
-`, {
-            onClose: (instance) => {
-              instance.querySelector('.modal') = instance.close;
-            }
+//  {
+//             onClose: (instance) => {
+//               instance.querySelector('.modal') = instance.close;
+//             }
 
-        })
-        console.log(evt.key);
+//         })
+//         console.log(evt.key);
         
-    }
+//     }
     
-}
+// }
