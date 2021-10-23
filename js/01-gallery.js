@@ -39,20 +39,21 @@ function onImgClick(evt) {
 `, {
         onShow: (instance) => {
         instance.element().querySelector('.modal').onclick = instance.close;
-        gallery.addEventListener('keydown', onEscModalClose, {once: true});
+        gallery.addEventListener('keydown', onEscModalClose, {once:true});
 
             function onEscModalClose(evt) {
                 if (evt.key === 'Escape') {
                     instance.close();
                 return;
-            }  
+                }
+                
             }
-        
+         
         }
     },
    {
-    onClose: (evt) => {
-           gallery.removeEventListener('keydown', onEscModalClose, { once: true });
+    onClose: (instance) => {
+           instance.removeEventListener('keydown', onEscModalClose, { once: true });
         }
 })
    
@@ -61,20 +62,3 @@ function onImgClick(evt) {
    
 }
 
-// function onEscModalClose(evt) {
-//     if (evt.key === 'Escape') {
-        
-    
-//         const instance = basicLightbox.create(
-   
-//  {
-//             onClose: (instance) => {
-//               instance.querySelector('.modal') = instance.close;
-//             }
-
-//         })
-//         console.log(evt.key);
-        
-//     }
-    
-// }
