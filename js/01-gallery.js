@@ -25,40 +25,40 @@ function createGalleryMarkup(items) {
 }
 
 
-function onImgClick(evt) {
-    evt.preventDefault();
-   
-    if (evt.target.nodeName !== 'IMG') {
-        return;
-    }
-    
-    const instance = basicLightbox.create(`
-    <div class="modal">
-     <img src="${evt.target.dataset.source} width="1280" height="720">
-    </div>
-`, {
-        onShow: (instance) => {
-        instance.element().querySelector('.modal').onclick = instance.close;
-        gallery.addEventListener('keydown', onEscModalClose, {once:true});
 
-            function onEscModalClose(evt) {
-                if (evt.key === 'Escape') {
-                    instance.close();
-                return;
-                }
-                
-            }
-         
+const instance = basicLightbox.create(`<img class="modal-img" src="">`,
+    {
+        onShow: (instance) => {
+            window.addEventListener('keydown', onEscClick);
+            
         }
     },
-   {
-    onClose: (instance) => {
-           instance.removeEventListener('keydown', onEscModalClose, { once: true });
+    {
+        onClose: (instance) => {
+            window.addEventListener('keydown', onEscClick);
         }
-})
-   
+    }
+    
+)
+
+
+function onImgClick(evt) {
+    evt.preventDefault();
+  if (evt.target.nodeName !== 'IMG') {
+        return;
+   }
+    instance.element().querySelector('.modal-img').src = evt.target.dataset.source;
+    
+
+    
     instance.show()
-    return evt.target.dataset.source;
-   
 }
 
+function onEscClick(evt) {
+         if (evt.key === 'Escape') {
+        instance.close();
+        return;
+        
+        }
+   
+    }
